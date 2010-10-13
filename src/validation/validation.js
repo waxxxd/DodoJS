@@ -1,16 +1,18 @@
-var alpha			= /[a-zA-Z]/;
+var alpha			= /[a-zA-Z]+/;
 var lowercase 		= /^[a-z]+$/;
 var uppercase 		= /^[A-Z]+$/;
 
 var numeric  		= /^(-|\+)?[0-9]+(?:\.[0-9]+)?$/;
-var integer			= /^(-|\+)?[0-9]$/;
+var integer			= /^(-|\+)?[0-9]+$/;
 var currency		= /^(-|\+)?([1-9][0-9]*|0{1})(\.[0-9]{2})?$/;
 
-var emailPattern	= /^[a-zA-Z0-9._-]+@(?:[a-zA-Z0-9-]+\.)+(?:[a-zA-Z]{2,4}|museum)$/;
+var alphaNumeric	= /^[a-zA-Z0-9]+$/;
+
+var emailPattern	= /^([^\.][a-zA-Z0-9!#$%\^&'*\+-\/=\?_{}\|~\.]+[^\.]|(\".*\"))@((?:[a-zA-Z0-9\-]+\.)+(?:[a-zA-Z]{2,4}|museum)|(\[([1-9]\d{0,2})\.([1-9]\d{0,2})\.([1-9]\d{0,2})\.([1-9]\d{0,2})\]))$/;
 
 function isEmpty(value) {
-	value = trim(value);
-	return !(/\S/.test(value));
+	if (value === null || value === undefined) return true;
+	return !(/\S/.test(trim(value)));
 }
 
 function isUppercase(value) {
@@ -22,11 +24,18 @@ function isLowercase(value) {
 }
 
 function isAlpha(value) {
+	if (value === null || value === undefined) return false;
 	return alpha.test(value);
 }
 
 function isNumeric(value) {
+	if (value === null || value === undefined) return false;
 	return numeric.test(value);
+}
+
+function isAlphaNumeric(value) {
+	if (value === null || value === undefined) return false;
+	return alphaNumeric.test(value);
 }
 
 function isCurrency(value) {
@@ -38,17 +47,18 @@ function isIntegral(value) {
 }
 
 function isValidEmail(emailAddress) {
-	return emailPattern.test(trim(emailAddress)); 
+	if (emailAddress === null || emailAddress === undefined || emailAddress.length > 254) return false;
+	return emailPattern.test(emailAddress); 
 }
 
 function leftTrim(value) {
-	value = value.replace(/^\s+/,'');
-	return value;
+	if (value === null || value === undefined) return "";
+	return value.replace(/^\s+/,'');
 }
 
 function rightTrim(value) {
-	value = value.replace(/\s+$/,'');
-	return value;
+	if (value === null || value === undefined) return "";
+	return value.replace(/\s+$/,'');
 }
 
 function trim(value) {
